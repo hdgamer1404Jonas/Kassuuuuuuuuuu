@@ -4,10 +4,20 @@ const { app, BrowserWindow } = require('electron')
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 69,
-    height: 69,
+    width: 300,
+    height: 300,
     icon: './electron/icon.jpg',
     frame: false,
+    webPreferences: {
+        nodeIntegration: true
+    },
+    resizable: false,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    show: true,
+    fullscreenable: false,
+    maximizable: false,
+    minimizable: false
   })
 
   win.loadFile('./electron/html/index.html')
