@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text&display=swap');
+
+body {
+    background-color: #470070;
+}
+
+.cet-titlebar,
+.cet-titlebar > * {
+    color: #ffffff;
+    font-family: 'Golos Text', sans-serif;
+}
