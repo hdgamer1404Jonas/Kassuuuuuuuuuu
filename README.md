@@ -6,7 +6,7 @@
 <p align="center" >Script to download cat images every 5 seconds.</p>
 
 <div align="center">
-  [![CI Test](https://github.com/hdgamer1404Jonas/Kassuuuuuuuuuu/actions/workflows/node.js.yml/badge.svg)](https://github.com/hdgamer1404Jonas/Kassuuuuuuuuuu/actions/workflows/node.js.yml)
+  <img src="https://github.com/hdgamer1404Jonas/Kassuuuuuuuuuu/actions/workflows/downloadtester.yml/badge.svg" alt="CI Test Status">
 </div>
 
 
