@@ -1,0 +1,86 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #470070;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.gallery {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    column-count: 1;
+    column-gap: 0;
+    column-fill: auto;
+    column-rule: 0;
+    column-span: 1;
+    column-width: 90%;
+
+    row-gap: 20px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.galleryDescription {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: scroll;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.description {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.gallery_item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+    padding: 0;
+    margin: 0;
+    overflow: scroll;
+}

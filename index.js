@@ -1,26 +1,82 @@
 const fs = require('fs');
 const https = require('https');
+const path = require('path')
 const { app, BrowserWindow } = require('electron')
+const {Tray, Menu} = require('electron')
+
+const { setupTitlebar, attachTitlebarToWindow } = require ("custom-electron-titlebar/main")
+
+// setup the titlebar main process
+setupTitlebar();
+
+let tray;
+
+app.whenReady().then(async () => {
+    tray = new Tray(path.join(__dirname, '/electron/assets/logo.png'))
+
+    const trayMenuTemplate = [
+        {
+            label: 'Kassuuuuuuuuuu',
+            icon: path.join(__dirname,'/electron/assets/logo_small.png'),
+            enabled: false
+        }, 
+        {
+            label: 'Close App',
+            click: function () {
+                process.exit()
+            }
+        }
+    ]
+
+    let trayMenu = Menu.buildFromTemplate(trayMenuTemplate)
+    tray.setContextMenu(trayMenu)
+    tray.setToolTip("Kassuuuuuuuuuu")
+})
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 300,
-    height: 300,
-    icon: './electron/icon.jpg',
-    frame: false,
+    width: 900,
+    height: 600,
+    titleBarStyle: 'hidden',
     webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: false,
+        sandbox: false,
+        preload: path.join(__dirname, '/electron/titlebar/preload.js')
     },
-    resizable: false,
-    alwaysOnTop: true,
-    skipTaskbar: true,
-    show: true,
-    fullscreenable: false,
-    maximizable: false,
-    minimizable: false
+    icon: __dirname + '/electron/assets/logo.ico',
+    autoHideMenuBar: true,
+    transparent: false,
+    frame: false,
+    skipTaskbar: false,
+    show: true
   })
 
-  win.loadFile('./electron/html/index.html')
+  attachTitlebarToWindow(win);
+
+  win.loadFile(__dirname + '/electron/html/startup.html')
+}
+
+const createGalleryWindow = () => {
+    const win = new BrowserWindow({
+        width: 600,
+        height: 800,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: false
+        },
+        icon: __dirname + '/electron/assets/logo.ico',
+        autoHideMenuBar: true,
+        frame: false,
+        alwaysOnTop: true,
+        scrollbars: false,
+        show: true,
+        resizable: false
+    })
+  
+    win.loadFile('./electron/html/gallery.html')
 }
 
 app.on('ready', createWindow)
