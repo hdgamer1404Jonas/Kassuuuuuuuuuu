@@ -6,6 +6,8 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 69,
     height: 69,
+    icon: './electron/icon.jpg',
+    frame: false,
   })
 
   win.loadFile('./electron/html/index.html')
