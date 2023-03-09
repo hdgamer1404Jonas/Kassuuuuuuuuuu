@@ -15,6 +15,11 @@ async function download() {
             const url = json.url;
             const filename = url.split('/').pop();
 
+            if (fs.existsSync('./nekos/' + filename)) {
+                console.log('File already exists');
+                return;
+            }
+
             https.get(url, (res) => {
                 res.pipe(fs.createWriteStream("./nekos/" + filename));
                 console.log('Downloaded ' + filename);
