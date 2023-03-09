@@ -1,7 +1,7 @@
 <p align="center" style="margin-bottom: 0px !important;">
   <img width="200" src="https://cdn.nekos.life/neko/neko_126.png" alt="Image of a cat" align="center">
 </p>
-<h1 align="center" style="margin-top: 0px;">Material Bread</h1>
+<h1 align="center" style="margin-top: 0px;">Kassuuuuuuuuuu</h1>
 
 <p align="center" >Script to download cat images every 5 seconds.</p>
 
