@@ -8,16 +8,19 @@ const runner = exec('node index.js', (err, stdout, stderr) => {
     } else {
         console.log(stdout);
         console.log(stderr);
-        setTimeout(() => {
-            proc.kill('SIGINT');
-            const files = fs.readdirSync('./nekos');
-            if (files.length < 1) {
-                console.log('No files were downloaded, seems like the downloader is broken, exiting...');
-                process.exit(1);
-            } else {
-                console.log('Downloaded ' + files.length + ' files in 30 seconds, exiting...');
-                process.exit(0);
-            }
-        }, 30000)
     }
 });
+
+console.log("Started testing...")
+
+setTimeout(() => {
+    runner.kill('SIGINT');
+    const files = fs.readdirSync('./nekos');
+    if (files.length < 1) {
+        console.log('No files were downloaded, seems like the downloader is broken, exiting...');
+        process.exit(1);
+    } else {
+        console.log('Downloaded ' + files.length + ' files in 30 seconds, test successfull!');
+        process.exit(0);
+    }
+}, 30000)
