@@ -1,86 +1,63 @@
 html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-}
-
-.main {
-    display: flex;
-    flex-direction: column;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
     background-color: #470070;
-    align-items: center;
-    justify-content: center;
-    
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+
 }
 
 .gallery {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: scroll;
-    column-count: 1;
-    column-gap: 0;
-    column-fill: auto;
-    column-rule: 0;
-    column-span: 1;
-    column-width: 90%;
-
-    row-gap: 20px;
-
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    padding: 1rem;
     align-items: center;
-    justify-content: center;
+    justify-items: center;
+}
+
+::-webkit-scrollbar {
+    width: 0.5em; /* width of scrollbar */
+    height: 0.5em; /* height of scrollbar */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0); /* set scrollbar thumb color to transparent */
 }
 
 .galleryDescription {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: scroll;
+    justify-content: center;
+    text-align: center;
+    
+    width: 200px;
+    height: 200px;
+
+    border: 1px solid #fff;
+    border-radius: 10px;
+
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+    margin: 10px;
+    margin-top: 15px;
+    margin-bottom: 0px
 }
 
 .description {
     font-size: 1rem;
     font-weight: 400;
     color: #fff;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-.gallery_item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    height: 90%;
-    padding: 0;
-    margin: 0;
-    overflow: scroll;
+    margin: 10px;
 }

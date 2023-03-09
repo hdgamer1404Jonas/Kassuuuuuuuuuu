@@ -1,8 +1,9 @@
 const fs = require('fs');
 const https = require('https');
 const path = require('path')
-const { app, BrowserWindow } = require('electron')
-const {Tray, Menu} = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
+const {Tray, Menu, dialog} = require('electron')
+const {download} = require("electron-dl");
 
 const { setupTitlebar, attachTitlebarToWindow } = require ("custom-electron-titlebar/main")
 
@@ -24,6 +25,12 @@ app.whenReady().then(async () => {
             label: 'Close App',
             click: function () {
                 process.exit()
+            }
+        },
+        {
+            label: 'Open Gallery',
+            click: function () {
+                createGalleryWindow()
             }
         }
     ]
@@ -69,9 +76,6 @@ const createGalleryWindow = () => {
         },
         icon: __dirname + '/electron/assets/logo.ico',
         autoHideMenuBar: true,
-        frame: false,
-        alwaysOnTop: true,
-        scrollbars: false,
         show: true,
         resizable: false
     })
@@ -79,7 +83,19 @@ const createGalleryWindow = () => {
     win.loadFile('./electron/html/gallery.html')
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+    createWindow()
+
+    ipcMain.on('download', (event, info) => {
+        const window = BrowserWindow.fromWebContents(event.sender)
+        download(BrowserWindow.getFocusedWindow(), info.url, info.properties)
+            .then(dl =>{ 
+                window.webContents.send("download complete", dl.getSavePath())
+                const shell = require('electron').shell
+                shell.showItemInFolder(dl.getSavePath())
+            })
+    })
+})
 
 /*const apilink = 'https://nekos.life/api/v2/img/neko';
 
