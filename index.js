@@ -1,7 +1,19 @@
 const fs = require('fs');
 const https = require('https');
+const { app, BrowserWindow } = require('electron')
 
-const apilink = 'https://nekos.life/api/v2/img/neko';
+const createWindow = () => {
+  const win = new BrowserWindow({
+    width: 69,
+    height: 69,
+  })
+
+  win.loadFile('./electron/html/index.html')
+}
+
+app.on('ready', createWindow)
+
+/*const apilink = 'https://nekos.life/api/v2/img/neko';
 
 async function download() {
     let data = '';
@@ -36,4 +48,4 @@ if (!fs.existsSync('./nekos')) {
 setInterval(download, 5000);
 
 console.log('Started downloading nekos every 5 seconds');
-console.log('Press CTRL + C to stop');
+console.log('Press CTRL + C to stop');*/
