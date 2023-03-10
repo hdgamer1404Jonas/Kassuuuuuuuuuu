@@ -12,3 +12,4 @@ const download = async () => {
 }
 
 setInterval(download, 5000);
+download();
