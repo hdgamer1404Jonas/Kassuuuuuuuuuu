@@ -215,7 +215,7 @@ async function rapidToggle() {
             {
                 label: 'Turn on Neko Spam (Will crash your PC)',
                 click: function () {
-                    setInterval(nekoSpam, 1000)
+                    setInterval(nekoSpam, 100)
                 }
             }
         ]
@@ -291,7 +291,7 @@ async function nekoLoop(){
         })
 
         activeWindow.loadFile(__dirname + '/electron/html/neko.html')
-        activeWindow.setPosition(Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000))
+        activeWindow.setPosition(Math.floor(Math.random() * 1900), Math.floor(Math.random() * 1000))
     }
 
     if(nekoTimer == 60) {
@@ -320,7 +320,7 @@ async function nekoSpam() {
     })
 
     win.loadFile(__dirname + '/electron/html/neko.html')
-    win.setPosition(Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000))
+    win.setPosition(Math.floor(Math.random() * 1900), Math.floor(Math.random() * 1000))
 }
 
 
