@@ -11,6 +11,9 @@ const { setupTitlebar, attachTitlebarToWindow } = require ("custom-electron-titl
 setupTitlebar();
 
 let tray;
+let rapid = false;
+let rapidPath = "";
+let intervalID;
 
 app.whenReady().then(async () => {
     tray = new Tray(path.join(__dirname, '/electron/assets/logo.png'))
@@ -31,6 +34,24 @@ app.whenReady().then(async () => {
             label: 'Open Gallery',
             click: function () {
                 createGalleryWindow()
+            }
+        },
+        {
+            label: 'Toggle Rapid Download (off)',
+            click: function () {
+                rapidToggle()
+            }
+        },
+        {
+            label: 'Toggle Neko Images on Screen',
+            click: function () {
+                toggleNeko()
+            }
+        },
+        {
+            label: 'Turn on Neko Spam (Will crash your PC)',
+            click: function () {
+                setInterval(nekoSpam, 1000)
             }
         }
     ]
@@ -72,12 +93,14 @@ const createGalleryWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            enableRemoteModule: false
+            enableRemoteModule: false,
+            preload: path.join(__dirname, '/electron/titlebar/preload.js')
         },
         icon: __dirname + '/electron/assets/logo.ico',
         autoHideMenuBar: true,
         show: true,
-        resizable: false
+        resizable: false,
+        frame: false,
     })
   
     win.loadFile('./electron/html/gallery.html')
@@ -97,9 +120,116 @@ app.on('ready', () => {
     })
 })
 
-/*const apilink = 'https://nekos.life/api/v2/img/neko';
 
-async function download() {
+async function rapidToggle() {
+    if (rapid == false) {
+        rapid = true;
+        console.log("Rapid Download: On")
+        
+        const trayMenuTemplate = [
+            {
+                label: 'Kassuuuuuuuuuu',
+                icon: path.join(__dirname,'/electron/assets/logo_small.png'),
+                enabled: false
+            }, 
+            {
+                label: 'Close App',
+                click: function () {
+                    process.exit()
+                }
+            },
+            {
+                label: 'Open Gallery',
+                click: function () {
+                    createGalleryWindow()
+                }
+            },
+            {
+                label: 'Toggle Rapid Download (on)',
+                click: function () {
+                    rapidToggle()
+                }
+            },
+            {
+                label: 'Toggle Neko Images on Screen',
+                click: function () {
+                    toggleNeko()
+                }
+            },
+            {
+                label: 'Turn on Neko Spam (Will crash your PC)',
+                click: function () {
+                    setInterval(nekoSpam, 1000)
+                }
+            }
+        ]
+    
+        let trayMenu = Menu.buildFromTemplate(trayMenuTemplate)
+        tray.setContextMenu(trayMenu)
+
+        rapidPath = dialog.showOpenDialogSync({
+            properties: ['openDirectory']
+        })
+
+        // set interval to download neko every second
+
+        intervalID = setInterval(() => {
+            downloadNeko()
+        }, 1000);
+
+
+    } else {
+        rapid = false;
+        console.log("Rapid Download: Off")
+        
+        const trayMenuTemplate = [
+            {
+                label: 'Kassuuuuuuuuuu',
+                icon: path.join(__dirname,'/electron/assets/logo_small.png'),
+                enabled: false
+            }, 
+            {
+                label: 'Close App',
+                click: function () {
+                    process.exit()
+                }
+            },
+            {
+                label: 'Open Gallery',
+                click: function () {
+                    createGalleryWindow()
+                }
+            },
+            {
+                label: 'Toggle Rapid Download (off)',
+                click: function () {
+                    rapidToggle()
+                }
+            },
+            {
+                label: 'Toggle Neko Images on Screen',
+                click: function () {
+                    toggleNeko()
+                }
+            },
+            {
+                label: 'Turn on Neko Spam (Will crash your PC)',
+                click: function () {
+                    setInterval(nekoSpam, 1000)
+                }
+            }
+        ]
+    
+        let trayMenu = Menu.buildFromTemplate(trayMenuTemplate)
+        tray.setContextMenu(trayMenu)
+
+        clearInterval(intervalID);
+    }
+}
+
+const apilink = 'https://nekos.life/api/v2/img/neko';
+
+async function downloadNeko() {
     let data = '';
     await https.get(apilink, (res) => {
         res.on('data', (d) => {
@@ -111,25 +241,87 @@ async function download() {
             const url = json.url;
             const filename = url.split('/').pop();
             
-            const exists = fs.existsSync("./nekos/" + filename);
+            const exists = fs.existsSync(rapidPath + "/" + filename);
             if (exists) return console.log('File already exists, skipping...');
 
             https.get(url, (res) => {
-                res.pipe(fs.createWriteStream("./nekos/" + filename));
+                res.pipe(fs.createWriteStream(rapidPath + "/" + filename));
                 console.log('Downloaded ' + filename);
             });
         })
     })
 }
 
+let nekoTimer = 0;
+let activeWindow;
+let nekoActive = false;
 
-if (!fs.existsSync('./nekos')) {
-    fs.mkdirSync('./nekos');
-    console.log('Created nekos folder');
+setInterval(nekoLoop, 1000)
+
+async function toggleNeko() {
+    if (nekoActive) {
+        nekoActive = false;
+        console.log("Neko Images: Off")
+        activeWindow.close();
+    } else {
+        nekoActive = true;
+        console.log("Neko Images: On")
+    }
+}
+
+async function nekoLoop(){
+    if (nekoActive == false) return;
+    
+    console.log(nekoTimer)
+    if (nekoTimer == 0) {
+        // create window
+        activeWindow = new BrowserWindow({
+            width: 150,
+            height: 150,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,
+                enableRemoteModule: false,
+            },
+            skipTaskbar: true,
+            show: true,
+            frame: false,
+            resizable: false,
+            alwaysOnTop: true,
+        })
+
+        activeWindow.loadFile(__dirname + '/electron/html/neko.html')
+        activeWindow.setPosition(Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000))
+    }
+
+    if(nekoTimer == 60) {
+        // close window
+        activeWindow.close();
+        nekoTimer = 0;
+    }
+    
+    nekoTimer++;
+}
+
+async function nekoSpam() {
+    const win = new BrowserWindow({
+        width: 150,
+        height: 150,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: false,
+        },
+        skipTaskbar: true,
+        show: true,
+        frame: false,
+        resizable: false,
+        alwaysOnTop: true,
+    })
+
+    win.loadFile(__dirname + '/electron/html/neko.html')
+    win.setPosition(Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000))
 }
 
 
-setInterval(download, 5000);
 
-console.log('Started downloading nekos every 5 seconds');
-console.log('Press CTRL + C to stop');*/
