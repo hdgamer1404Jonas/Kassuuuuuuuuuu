@@ -175,7 +175,7 @@ async function rapidToggle() {
 
         intervalID = setInterval(() => {
             downloadNeko()
-        }, 1000);
+        }, 100);
 
 
     } else {
